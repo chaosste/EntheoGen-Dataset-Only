@@ -1,5 +1,5 @@
 <div align="center">
-# entheogen-dataset
+# Entheogen Dataset
 
 An open-source academic research dataset cataloguing entheogens — psychoactive substances with documented traditional, ceremonial, or spiritual use. This dataset is maintained as a standalone repository for transparency and independent reuse.
 
