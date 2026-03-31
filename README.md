@@ -1,6 +1,20 @@
+<div align="center">
 # entheogen-dataset
 
 An open-source academic research dataset cataloguing entheogens — psychoactive substances with documented traditional, ceremonial, or spiritual use. This dataset is maintained as a standalone repository for transparency and independent reuse.
+
+---
+
+**Live demos:** 
+
+[www.entheogen.newpsychonaut.com](https://www.entheogen.newpsychonaut.com/) 
+· 
+[www.entheogen.azurewebsites.net](https://entheogen.azurewebsites.net)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+  <img src="docs/assets/entheogen-asset-beta-0.1.gif" width="600" alt="EntheoGen release demo" />
+</div>
 
 ---
 
