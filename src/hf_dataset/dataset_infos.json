@@ -1,0 +1,18 @@
+{
+  "entheogen_interactions": {
+    "description": "Pairwise psychedelic interaction safety dataset with provenance-aware rule classification",
+    "citation": "",
+    "homepage": "",
+    "license": "mit",
+    "features": {
+      "substance_a_id": "string",
+      "substance_b_id": "string",
+      "interaction_code": "string",
+      "risk_scale": "int32",
+      "origin": "string",
+      "mechanism_category": "string",
+      "confidence": "string",
+      "evidence_tier": "string"
+    }
+  }
+}

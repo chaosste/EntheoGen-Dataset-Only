@@ -1,0 +1,5 @@
+run_name,adapter,fixture_name,total_cases,primary_metric_name,primary_metric_value,interaction_code_accuracy,origin_accuracy,mechanism_category_accuracy,risk_scale_exact_accuracy,risk_scale_mae,abstention_recall,hallucination_rate_on_unknown,explicit_rule_recall
+oracle_abstention,oracle,abstention,458,abstention_recall,1,1,1,1,1,0,1,0,
+oracle_direct_qa,oracle,direct_qa,561,interaction_code_accuracy,1,1,1,1,1,0,1,0,1
+oracle_mechanism,oracle,mechanism,15,mechanism_category_accuracy,1,1,1,1,1,0,,,1
+oracle_provenance,oracle,provenance,561,origin_accuracy,1,1,1,1,1,0,1,0,1

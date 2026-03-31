@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-03-27T14:55:56.366Z",
+  "fixtures": [
+    {
+      "fixture_name": "direct_qa",
+      "case_count": 561,
+      "predictions_path": "evals/results/oracle_direct_qa_predictions.jsonl",
+      "report_path": "evals/results/oracle_direct_qa_report.json"
+    },
+    {
+      "fixture_name": "abstention",
+      "case_count": 458,
+      "predictions_path": "evals/results/oracle_abstention_predictions.jsonl",
+      "report_path": "evals/results/oracle_abstention_report.json"
+    },
+    {
+      "fixture_name": "mechanism",
+      "case_count": 15,
+      "predictions_path": "evals/results/oracle_mechanism_predictions.jsonl",
+      "report_path": "evals/results/oracle_mechanism_report.json"
+    },
+    {
+      "fixture_name": "provenance",
+      "case_count": 561,
+      "predictions_path": "evals/results/oracle_provenance_predictions.jsonl",
+      "report_path": "evals/results/oracle_provenance_report.json"
+    }
+  ]
+}

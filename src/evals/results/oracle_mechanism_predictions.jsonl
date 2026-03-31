@@ -1,0 +1,15 @@
+{"id":"mechanism:ayahuasca|nn_dmt","predicted_interaction_code":"CAU","predicted_origin":"explicit","predicted_mechanism_category":"cardiovascular_load","predicted_risk_scale":3}
+{"id":"mechanism:ayahuasca|mescaline_peyote","predicted_interaction_code":"CAU","predicted_origin":"explicit","predicted_mechanism_category":"sympathomimetic","predicted_risk_scale":3}
+{"id":"mechanism:ayahuasca|salvia","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}
+{"id":"mechanism:ayahuasca|kambo","predicted_interaction_code":"CAU","predicted_origin":"explicit","predicted_mechanism_category":"cardiovascular_load","predicted_risk_scale":3}
+{"id":"mechanism:ayahuasca|tobacco_rape","predicted_interaction_code":"LOW_MOD","predicted_origin":"explicit","predicted_mechanism_category":"cardiovascular_load","predicted_risk_scale":2}
+{"id":"mechanism:antipsychotics|ayahuasca","predicted_interaction_code":"UNS","predicted_origin":"explicit","predicted_mechanism_category":"qt_prolongation","predicted_risk_scale":4}
+{"id":"mechanism:ayahuasca|benzodiazepines","predicted_interaction_code":"LOW_MOD","predicted_origin":"explicit","predicted_mechanism_category":"serotonergic","predicted_risk_scale":2}
+{"id":"mechanism:psilocybin|salvia","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}
+{"id":"mechanism:amphetamine_stims|psilocybin","predicted_interaction_code":"CAU","predicted_origin":"explicit","predicted_mechanism_category":"stimulant_stack","predicted_risk_scale":3}
+{"id":"mechanism:antipsychotics|psilocybin","predicted_interaction_code":"LOW_MOD","predicted_origin":"explicit","predicted_mechanism_category":"serotonergic","predicted_risk_scale":2}
+{"id":"mechanism:nn_dmt|salvia","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}
+{"id":"mechanism:five_meo_dmt|salvia","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}
+{"id":"mechanism:mescaline_peyote|salvia","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}
+{"id":"mechanism:salvia|yopo","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}
+{"id":"mechanism:lsd|salvia","predicted_interaction_code":"CAU","predicted_origin":"fallback","predicted_mechanism_category":"serotonergic","predicted_risk_scale":3}

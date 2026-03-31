@@ -1,0 +1,8 @@
+{
+  "run_name": "manual_direct_qa_example",
+  "adapter": "manual-file",
+  "fixture_path": "evals/fixtures/direct_qa.jsonl",
+  "predictions_path": "evals/results/examples/manual_direct_qa_predictions.jsonl",
+  "out_dir": "evals/results/manual_direct_qa_example",
+  "adapter_options": {}
+}

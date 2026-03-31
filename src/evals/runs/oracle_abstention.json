@@ -1,0 +1,7 @@
+{
+  "run_name": "oracle_abstention",
+  "adapter": "oracle",
+  "fixture_path": "evals/fixtures/abstention.jsonl",
+  "out_dir": "evals/results/oracle_abstention_run",
+  "adapter_options": {}
+}

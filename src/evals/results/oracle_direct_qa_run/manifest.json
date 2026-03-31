@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-03-27T14:55:56.367Z",
+  "run_name": "oracle_direct_qa",
+  "adapter": "oracle",
+  "fixture_path": "evals/fixtures/direct_qa.jsonl",
+  "total_cases": 561,
+  "predictions_path": "evals/results/oracle_direct_qa_run/predictions.jsonl",
+  "report_path": "evals/results/oracle_direct_qa_run/report.json"
+}

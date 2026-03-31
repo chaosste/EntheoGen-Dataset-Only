@@ -1,0 +1,118 @@
+{
+  "fixture_name": "mechanism",
+  "total_cases": 15,
+  "primary_metric_name": "mechanism_category_accuracy",
+  "primary_metric_value": 1,
+  "metrics": {
+    "total_cases": 15,
+    "interaction_code_accuracy": 1,
+    "origin_accuracy": 1,
+    "mechanism_category_accuracy": 1,
+    "risk_scale_exact_accuracy": 1,
+    "risk_scale_mae": 0,
+    "abstention_recall": null,
+    "hallucination_rate_on_unknown": null,
+    "explicit_rule_recall": 1
+  },
+  "per_slice": {
+    "mechanism:cardiovascular_load": {
+      "total_cases": 3,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "mechanism:qt_prolongation": {
+      "total_cases": 1,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "mechanism:serotonergic": {
+      "total_cases": 9,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "mechanism:stimulant_stack": {
+      "total_cases": 1,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "mechanism:sympathomimetic": {
+      "total_cases": 1,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "origin:explicit": {
+      "total_cases": 8,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "origin:fallback": {
+      "total_cases": 7,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": null
+    },
+    "risk:high_risk": {
+      "total_cases": 1,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    },
+    "risk:moderate_risk": {
+      "total_cases": 14,
+      "interaction_code_accuracy": 1,
+      "origin_accuracy": 1,
+      "mechanism_category_accuracy": 1,
+      "risk_scale_exact_accuracy": 1,
+      "risk_scale_mae": 0,
+      "abstention_recall": null,
+      "hallucination_rate_on_unknown": null,
+      "explicit_rule_recall": 1
+    }
+  }
+}

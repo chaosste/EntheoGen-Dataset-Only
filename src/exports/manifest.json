@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-03-27T14:35:32.062Z",
+  "source_drug_count": 33,
+  "pair_count": 561,
+  "schema_version": 1,
+  "code_distribution": {
+    "CAU": 18,
+    "DAN": 34,
+    "LOW_MOD": 15,
+    "SELF": 33,
+    "UNK": 458,
+    "UNS": 3
+  },
+  "origin_distribution": {
+    "explicit": 37,
+    "fallback": 33,
+    "unknown": 458,
+    "self": 33
+  },
+  "mechanism_category_distribution": {
+    "serotonergic": 9,
+    "maoi": 0,
+    "qt_prolongation": 1,
+    "sympathomimetic": 1,
+    "cns_depressant": 0,
+    "anticholinergic": 0,
+    "dopaminergic": 0,
+    "glutamatergic": 0,
+    "gabaergic": 0,
+    "stimulant_stack": 1,
+    "psychedelic_potentiation": 0,
+    "cardiovascular_load": 3,
+    "unknown": 546
+  },
+  "diagnostics_generated": true,
+  "slice_directory": "slices/",
+  "validation_script": "scripts/validateDataset.ts"
+}

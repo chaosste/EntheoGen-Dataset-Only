@@ -1,0 +1,19 @@
+{
+  "name": "interaction-exporter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export:interactions": "tsx scripts/exportInteractions.ts",
+    "validate:dataset": "tsx scripts/validateDataset.ts",
+    "check:regression": "tsx scripts/checkRegression.ts",
+    "eval:fixtures": "tsx scripts/buildEvalFixtures.ts",
+    "eval:oracle": "tsx scripts/runAllEvals.ts",
+    "eval:score": "tsx scripts/scorePredictions.ts",
+    "eval:run": "tsx scripts/runExperiment.ts",
+    "eval:batch": "tsx scripts/runExperimentBatch.ts",
+    "eval:leaderboard": "tsx scripts/buildLeaderboard.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}

@@ -1,0 +1,1 @@
+Is the interaction assessment for {A} and {B} based on an explicit pair rule, fallback class logic, self-pair identity, or unknown evidence?

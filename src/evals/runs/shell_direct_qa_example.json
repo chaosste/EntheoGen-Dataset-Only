@@ -1,0 +1,11 @@
+{
+  "run_name": "shell_direct_qa_example",
+  "adapter": "shell-command",
+  "fixture_path": "evals/fixtures/direct_qa.jsonl",
+  "out_dir": "evals/results/shell_direct_qa_example",
+  "adapter_options": {
+    "command_template": "cat",
+    "provider_name": "shell-example",
+    "model_name": "stdin-echo"
+  }
+}

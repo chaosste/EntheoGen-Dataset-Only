@@ -1,0 +1,7 @@
+{
+  "run_name": "oracle_direct_qa",
+  "adapter": "oracle",
+  "fixture_path": "evals/fixtures/direct_qa.jsonl",
+  "out_dir": "evals/results/oracle_direct_qa_run",
+  "adapter_options": {}
+}
