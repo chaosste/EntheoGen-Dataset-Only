@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "export:interactions": "tsx scripts/exportInteractions.ts",
+    "import:interaction-pairs": "tsx scripts/importinteractionPairs.ts",
     "validate:dataset": "tsx scripts/validateDataset.ts",
     "check:regression": "tsx scripts/checkRegression.ts",
     "eval:fixtures": "tsx scripts/buildEvalFixtures.ts",
@@ -13,7 +14,12 @@
     "eval:batch": "tsx scripts/runExperimentBatch.ts",
     "eval:leaderboard": "tsx scripts/buildLeaderboard.ts"
   },
+  "dependencies": {
+    "pg": "^8.14.1"
+  },
   "devDependencies": {
+    "@types/node": "^22.15.17",
+    "@types/pg": "^8.15.0",
     "tsx": "^4.21.0"
   }
 }
