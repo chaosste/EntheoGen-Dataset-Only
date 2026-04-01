@@ -1,7 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
+import { fileURLToPath } from "node:url";
+import type { PoolClient } from "pg";
 import { Pool } from "pg";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, "..");
 
 type InteractionRow = {
   pair_key: string;
@@ -19,7 +25,7 @@ type InteractionRow = {
 
   interaction_code: string;
   interaction_label?: string | null;
-  risk_scale: number;
+  risk_scale: number | null;
   origin: "explicit" | "fallback" | "unknown" | "self";
   mechanism_category: string;
   mechanism?: string | null;
@@ -46,7 +52,7 @@ function requiredEnv(name: string): string {
 }
 
 async function upsertSubstance(
-  client: Awaited<ReturnType<typeof pool.connect>>,
+  client: PoolClient,
   id: string,
   name?: string,
   substanceClass?: string,
@@ -79,7 +85,7 @@ async function upsertSubstance(
 }
 
 async function upsertInteractionPair(
-  client: Awaited<ReturnType<typeof pool.connect>>,
+  client: PoolClient,
   row: InteractionRow,
 ): Promise<void> {
   await client.query(
@@ -155,7 +161,7 @@ async function main(): Promise<void> {
 
   const inputPath =
     process.argv[2] ??
-    path.resolve(process.cwd(), "exports", "interaction_pairs.jsonl");
+    path.join(projectRoot, "exports", "interaction_pairs.jsonl");
 
   if (!fs.existsSync(inputPath)) {
     throw new Error(`Input file not found: ${inputPath}`);
