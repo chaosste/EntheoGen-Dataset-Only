@@ -1,4 +1,7 @@
 {
+  "generated_at": "2026-04-02T01:23:17.243Z",
+  "dataset_version": "v2.0.0",
+  "schema_version": 1,
   "total_rows": 561,
   "explicit_rows": 37,
   "fallback_rows": 33,

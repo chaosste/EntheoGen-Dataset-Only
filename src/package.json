@@ -6,6 +6,7 @@
     "export:interactions": "tsx scripts/exportInteractions.ts",
     "import:interaction-pairs": "tsx scripts/importinteractionPairs.ts",
     "validate:dataset": "tsx scripts/validateDataset.ts",
+    "validate:schema": "tsx scripts/validateSchema.ts",
     "check:regression": "tsx scripts/checkRegression.ts",
     "eval:fixtures": "tsx scripts/buildEvalFixtures.ts",
     "eval:oracle": "tsx scripts/runAllEvals.ts",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/node": "^22.15.17",
     "@types/pg": "^8.15.0",
+    "ajv": "^8.17.1",
     "tsx": "^4.21.0"
   }
 }

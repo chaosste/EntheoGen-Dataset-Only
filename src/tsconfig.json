@@ -8,5 +8,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["scripts/**/*.ts", "data/**/*.ts"]
+  "include": ["scripts/**/*.ts", "data/**/*.ts", "datasetVersion.ts"]
 }
