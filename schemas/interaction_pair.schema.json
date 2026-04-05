@@ -64,7 +64,20 @@
     },
     "sources": {
       "type": ["string", "null"],
-      "description": "Internal traceability only (e.g. working filenames or slide labels). Not a bibliography; do not cite as academic references."
+      "description": "Internal traceability labels. Export pipeline resolves these labels to canonical source IDs in source_refs."
+    },
+    "source_refs": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Canonical deduplicated source IDs resolved from sources labels."
+    },
+    "source_fingerprint": {
+      "type": ["string", "null"],
+      "description": "SHA-256 fingerprint over sorted source_refs for deduplication and provenance integrity checks."
     }
   },
   "additionalProperties": true

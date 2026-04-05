@@ -121,11 +121,15 @@ Install dependencies once: `npm install` inside `src/`.
 | `npm run export:interactions` | Regenerate `exports/` from `drugData.ts` |
 | `npm run validate:dataset` | Validate `exports/interaction_pairs.jsonl` |
 | `npm run validate:schema` | JSON Schema check (`schemas/` at repo root) |
+| `npm run verify:pg:migrations` | Static checks for `sql/migrations/*.sql` DB contract |
 | `npm run import:interaction-pairs` | JSONL → Postgres; set `DATABASE_URL` |
 
 For local Postgres without TLS, set `PGSSL=false`. Other `eval:*` scripts support
 benchmarking and leaderboards (see
 [`src/evals/README.md`](src/evals/README.md)).
+
+Postgres migration scaffold and rollout notes are in
+[`sql/README.md`](sql/README.md).
 
 ---
 
@@ -156,14 +160,36 @@ If you use this repository in academic work, cite the **dataset release** using
 date there when you cut a new public release; the canonical interaction export
 version also lives in [`src/datasetVersion.ts`](src/datasetVersion.ts).
 
-**Row-level text is not a bibliography.** Fields such as `sources`,
-`evidence_tier`, and `field_notes` in `interaction_pairs` exports are
-**internal traceability** (working document labels, curator notes, filenames).
-They are **not** peer-reviewed citations and should not be presented or
-searched as such—see [`src/hf_dataset/README.md`](src/hf_dataset/README.md).
+**Provenance is now normalized.** `interaction_pairs` rows include:
+
+- `sources`: raw curator traceability labels
+- `source_refs`: canonical deduplicated source IDs resolved from `sources`
+- `source_fingerprint`: deterministic hash of `source_refs` for integrity checks
+
+Canonical source metadata (including APA citation text where available) is
+exported to [`src/exports/source_registry.json`](src/exports/source_registry.json).
+This is the authoritative mapping from working labels to references.
+
+`evidence_tier` and `field_notes` remain internal curation qualifiers and are
+not bibliography fields.
 
 Dataset evolution for ML and reproducibility is summarised in
 [`DATASET_CHANGELOG.md`](DATASET_CHANGELOG.md).
+
+### Bibliography Mapping (APA)
+
+Current canonical source mapping includes these references:
+
+1. Alma Healing Center. (2025). *Ayahuasca and medication interactions*. Alma
+Healing Center. https://almahealingcenter.com
+2. Malcolm, B. (2022). *Ayahuasca and Drug Interaction: The Good, the Bad, and
+the Soul*. University of Connecticut. https://share.google/go3FfRMyYvxSJr99v
+3. Ruffell, S., Netzband, N., Bird, C., Young, A. H., & Juruena, M. F. (2020).
+*The pharmacological interaction of compounds in ayahuasca: A systematic
+review (Corrigendum).*
+4. Halman, A., Kong, G., Sarris, J., & Perkins, D. (2024). *Drug-drug
+interactions involving classic psychedelics: A systematic review*. *Journal of
+Psychopharmacology, 38*(1), 3-18. https://doi.org/10.1177/02698811231211219
 
 ---
 

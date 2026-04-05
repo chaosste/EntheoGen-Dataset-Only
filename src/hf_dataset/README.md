@@ -1,7 +1,7 @@
 # EntheoGen Interaction Dataset
 
 <!-- markdownlint-disable-next-line MD013 -->
-**Export bundle:** dataset version `v2.0.0` · generated `2026-04-02T01:23:17.243Z` · schema version `1`
+**Export bundle:** dataset version `v2.1.0` · generated `2026-04-05T03:26:53.833Z` · schema version `1`
 
 The line above is refreshed when you run `npm run export:interactions` from `src/`
 (see `src/datasetVersion.ts` for the canonical version).
@@ -60,16 +60,18 @@ measure.
 not “safe.”** Do not invert abstention as a benign class without explicit
 protocol design.
 
-### `sources`, `evidence_tier`, `field_notes`
+### `sources`, `source_refs`, `source_fingerprint`, `evidence_tier`, `field_notes`
 
-These strings are **internal curation traceability** for the rule set (e.g.
-working filenames, slide titles, non-public notes). They help maintainers
-reconcile rows with source materials inside the project.
+`sources` is raw curation traceability text (working labels, filenames,
+annotated slide references). Export generation resolves these labels into
+canonical IDs in `source_refs` and emits a deterministic
+`source_fingerprint` hash.
 
-They are **not** a formal reference list, **not** peer-reviewed bibliography,
-and **not** guaranteed to name documents readers can obtain. **Do not** cite
-them like academic references, treat `.pdf` mentions as publications, or expect
-third parties to locate “ayahuasca info.pdf”–style labels as standalone sources.
+Canonical mapping metadata is published in `src/exports/source_registry.json`
+for reproducibility and deduplication checks.
+
+`evidence_tier` and `field_notes` remain **internal curation qualifiers**, not
+bibliographic metadata.
 
 For citing **this dataset release**, use [`CITATION.cff`](../../CITATION.cff) at
 the repository root—not row-level `sources` text.

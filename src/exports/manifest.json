@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-04-02T01:23:17.243Z",
-  "dataset_version": "v2.0.0",
+  "generated_at": "2026-04-05T03:26:53.833Z",
+  "dataset_version": "v2.1.0",
   "source_drug_count": 33,
   "pair_count": 561,
   "schema_version": 1,
@@ -35,5 +35,7 @@
   },
   "diagnostics_generated": true,
   "slice_directory": "slices/",
-  "validation_script": "scripts/validateDataset.ts"
+  "validation_script": "scripts/validateDataset.ts",
+  "source_reference_count": 8,
+  "source_registry_file": "exports/source_registry.json"
 }

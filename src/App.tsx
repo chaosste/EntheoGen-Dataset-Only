@@ -28,8 +28,6 @@ import Markdown from 'react-markdown';
 import { DRUGS, LEGEND, getInteractionEvidence } from './data/drugData';
 import { getInteractionExplanation, getDrugSummary } from './services/geminiService';
 import logoVine from './assets/logo-vine.png';
-import logoLeaf from './assets/logo-leaf.png';
-import logoJaguar from './assets/logo-jaguar.png';
 
 // --- Components ---
 
@@ -162,7 +160,7 @@ function SearchableSelect({
           aria-autocomplete="list"
           aria-haspopup="listbox"
           autoComplete="off"
-        disabled={disabled}
+          disabled={disabled}
           value={inputValue}
           onFocus={() => {
             if (!isOpen) openDropdown();
@@ -241,21 +239,25 @@ export default function App() {
 
   // Load favorites
   useEffect(() => {
-    const saved =
-      localStorage.getItem(favoritesStorageKey) ||
-      localStorage.getItem('seshguard_favorites');
-    if (saved) {
-      try {
+    try {
+      const saved =
+        localStorage.getItem(favoritesStorageKey) ||
+        localStorage.getItem('seshguard_favorites');
+      if (saved) {
         setFavorites(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse favorites");
       }
+    } catch (e) {
+      console.error("Failed to load favorites", e);
     }
   }, []);
 
   // Save favorites
   useEffect(() => {
-    localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    try {
+      localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    } catch (e) {
+      console.error("Failed to save favorites", e);
+    }
   }, [favorites]);
 
   const interactionEvidence = useMemo(() => {
@@ -281,14 +283,17 @@ export default function App() {
     const id = [drug1, drug2].sort().join('-');
 
     if (isFavorited) {
-      setFavorites(favorites.filter(f => f.id !== id));
+      setFavorites((current) => current.filter((f) => f.id !== id));
     } else {
-      setFavorites([...favorites, {
-        id,
-        d1: drug1,
-        d2: drug2,
-        code: interactionCode
-      }]);
+      setFavorites((current) => [
+        ...current,
+        {
+          id,
+          d1: drug1,
+          d2: drug2,
+          code: interactionCode
+        }
+      ]);
     }
   };
 
@@ -335,8 +340,14 @@ export default function App() {
         );
         setExplanation(interactionReadout);
       }
+    } catch (err) {
+      console.error("Explanation readout error:", err);
+      setError("We couldn't render the interaction explanation. Summary output may still load.");
+    } finally {
       setIsLoadingExplanation(false);
+    }
 
+    try {
       // Rule-based summary (single or combined).
       const targetDrug1 = selectedDrug1 ? d1Name : d2Name;
       const targetDrug2 = (selectedDrug1 && selectedDrug2) ? d2Name : undefined;
@@ -352,10 +363,11 @@ export default function App() {
       });
       setSummary(profile);
     } catch (err) {
-      console.error("Readout error:", err);
+      console.error("Summary readout error:", err);
       setError("We couldn't render the interaction readout. Please retry.");
+    } finally {
+      setIsLoadingSummary(false);
     }
-    setIsLoadingSummary(false);
   };
 
   const handleReset = () => {
@@ -760,7 +772,7 @@ export default function App() {
                               </div>
                             </button>
                             <button
-                              onClick={() => setFavorites(favorites.filter(f => f.id !== fav.id))}
+                              onClick={() => setFavorites((current) => current.filter((f) => f.id !== fav.id))}
                               className="p-2 text-white/20 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                             >
                               <Trash2 className="w-4 h-4" />

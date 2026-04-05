@@ -4,8 +4,8 @@
     "citation": "",
     "homepage": "",
     "license": "mit",
-    "dataset_version": "v2.0.0",
-    "generated_at": "2026-04-02T01:23:17.243Z",
+    "dataset_version": "v2.1.0",
+    "generated_at": "2026-04-05T03:26:53.833Z",
     "schema_version": 1,
     "features": {
       "substance_a_id": "string",
@@ -15,7 +15,9 @@
       "origin": "string",
       "mechanism_category": "string",
       "confidence": "string",
-      "evidence_tier": "string"
+      "evidence_tier": "string",
+      "source_refs": "list<string>",
+      "source_fingerprint": "string"
     }
   }
 }

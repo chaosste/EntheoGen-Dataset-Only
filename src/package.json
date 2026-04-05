@@ -7,6 +7,7 @@
     "import:interaction-pairs": "tsx scripts/importinteractionPairs.ts",
     "validate:dataset": "tsx scripts/validateDataset.ts",
     "validate:schema": "tsx scripts/validateSchema.ts",
+    "verify:pg:migrations": "tsx scripts/verifyPgMigrations.ts",
     "check:regression": "tsx scripts/checkRegression.ts",
     "eval:fixtures": "tsx scripts/buildEvalFixtures.ts",
     "eval:oracle": "tsx scripts/runAllEvals.ts",

@@ -10,6 +10,7 @@ import {
   resolveInteraction,
   type RuleOrigin,
 } from '../data/drugData.ts';
+import { resolveSources, SOURCE_REGISTRY } from '../data/sourceRegistry.ts';
 import { DATASET_VERSION, SCHEMA_VERSION } from '../datasetVersion.ts';
 
 interface ExportRow {
@@ -29,6 +30,8 @@ interface ExportRow {
   evidence_tier: string | null;
   field_notes: string | null;
   sources: string | null;
+  source_refs: string[] | null;
+  source_fingerprint: string | null;
 }
 
 interface Manifest {
@@ -43,6 +46,8 @@ interface Manifest {
   diagnostics_generated: true;
   slice_directory: 'slices/';
   validation_script: 'scripts/validateDataset.ts';
+  source_reference_count: number;
+  source_registry_file: 'exports/source_registry.json';
 }
 
 interface DiagnosticsSummary {
@@ -91,6 +96,8 @@ const csvColumns: Array<keyof ExportRow> = [
   'evidence_tier',
   'field_notes',
   'sources',
+  'source_refs',
+  'source_fingerprint',
 ];
 
 const optionalText = (value: string | undefined): string | null => value ?? null;
@@ -102,6 +109,13 @@ const buildRow = (
   const { evidence, origin, pairKey } = resolveInteraction(drugAId, drugBId);
   const legend = LEGEND[evidence.code];
   const mechanismCategory = classifyMechanismCategory(evidence.mechanism);
+  const sourceResolution = resolveSources(evidence.sources);
+
+  if (sourceResolution.unresolvedLabels.length > 0) {
+    throw new Error(
+      `Unmapped source labels for pair ${pairKey}: ${sourceResolution.unresolvedLabels.join(', ')}`,
+    );
+  }
 
   return {
     substance_a_id: drugAId,
@@ -120,6 +134,8 @@ const buildRow = (
     evidence_tier: optionalText(evidence.evidenceTier),
     field_notes: optionalText(evidence.fieldNotes),
     sources: optionalText(evidence.sources),
+    source_refs: sourceResolution.sourceIds,
+    source_fingerprint: sourceResolution.sourceFingerprint,
   };
 };
 
@@ -144,12 +160,12 @@ const toJsonl = (rows: ExportRow[]): string => {
   return `${rows.map((row) => JSON.stringify(row)).join('\n')}\n`;
 };
 
-const escapeCsvValue = (value: string | number | boolean | null): string => {
+const escapeCsvValue = (value: string | number | boolean | string[] | null): string => {
   if (value === null) {
     return '';
   }
 
-  const stringValue = String(value);
+  const stringValue = Array.isArray(value) ? value.join('|') : String(value);
   if (/[",\n\r]/.test(stringValue)) {
     return `"${stringValue.replace(/"/g, '""')}"`;
   }
@@ -351,6 +367,18 @@ const main = (): void => {
   writeExport('interaction_pairs_fallback_only.jsonl', toJsonl(fallbackOnlyRows));
   writeExport('interaction_pairs_unknown_only.jsonl', toJsonl(unknownOnlyRows));
   writeExport('interaction_pairs_self_only.jsonl', toJsonl(selfOnlyRows));
+  writeExport(
+    'source_registry.json',
+    `${JSON.stringify(
+      {
+        generated_at: generatedAtIso,
+        dataset_version: DATASET_VERSION,
+        entries: SOURCE_REGISTRY,
+      },
+      null,
+      2,
+    )}\n`,
+  );
 
   writeHfDatasetFile('train.jsonl', toJsonl(rows));
   writeHfDatasetFile('explicit.jsonl', toJsonl(explicitOnlyRows));
@@ -378,6 +406,8 @@ const main = (): void => {
             mechanism_category: 'string',
             confidence: 'string',
             evidence_tier: 'string',
+            source_refs: 'list<string>',
+            source_fingerprint: 'string',
           },
         },
       },
@@ -418,6 +448,8 @@ const main = (): void => {
     diagnostics_generated: true,
     slice_directory: 'slices/',
     validation_script: 'scripts/validateDataset.ts',
+    source_reference_count: SOURCE_REGISTRY.length,
+    source_registry_file: 'exports/source_registry.json',
   };
 
   writeExport('manifest.json', `${JSON.stringify(manifest, null, 2)}\n`);
