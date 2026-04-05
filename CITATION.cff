@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+title: EntheoGen Interaction Dataset
+message: >-
+  Use this file to cite the EntheoGen Interaction Dataset release (repository
+  snapshot / version). Row-level columns such as `sources` in exported JSONL are
+  internal curation traceability (working labels, non-public notes, or filenames).
+  They are not formal bibliographic references and must not be cited as
+  peer-reviewed literature or expected to resolve for readers.
+authors:
+  - family-names: Beale
+    given-names: Stephen
+version: 2.0.0
+date-released: 2026-04-02
+repository-code: 'https://github.com/chaosste/EntheoGen'
+license: MIT

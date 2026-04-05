@@ -1,0 +1,98 @@
+{
+  "generated_at": "2026-04-05T03:26:53.833Z",
+  "dataset_version": "v2.1.0",
+  "entries": [
+    {
+      "id": "alma_ayahuasca_medication_interactions_2025",
+      "canonicalLabel": "Alma Healing Center-Ayahuasca and medication interactions.pdf",
+      "apaCitation": "Alma Healing Center. (2025). Ayahuasca and medication interactions. Alma Healing Center.",
+      "url": "https://almahealingcenter.com",
+      "kind": "publication",
+      "aliases": [
+        "ayahuasca-interactions.pdf",
+        "ayahuasca-interactions.pdf (p1 text)",
+        "Alma Healing Center-Ayahuasca and medication interactions.pdf",
+        "Ayahuasca and medication interactions"
+      ]
+    },
+    {
+      "id": "malcolm_ayahuasca_drug_interaction_2022",
+      "canonicalLabel": "Ayahuasca and Drug Interaction.pdf",
+      "apaCitation": "Malcolm, B. (2022). Ayahuasca and Drug Interaction: The Good, the Bad, and the Soul. University of Connecticut.",
+      "url": "https://share.google/go3FfRMyYvxSJr99v",
+      "kind": "publication",
+      "aliases": [
+        "Ayahuasca and Drug Interaction.pdf",
+        "Ayahuasca and Drug Interaction.pdf (Drug Contraindications slide)",
+        "Ayahuasca and Drug Interaction.pdf (Good combinations caveat)",
+        "Ayahuasca and Drug Interaction.pdf (The Good slide)",
+        "Ayahuasca and Drug Interaction.pdf (The Good + Contraindications slides)",
+        "Ayahuasca and Drug Interaction.pdf (pharmahuasca section)",
+        "Ayahuasca and Drug Interaction.pdf (summary slide text)",
+        "Ayahuasca and Drug Interaction"
+      ]
+    },
+    {
+      "id": "ruffell_compounds_ayahuasca_corrigendum_2020",
+      "canonicalLabel": "ruffell-2020-pharmacological-interaction-compounds-ayahuasca.pdf",
+      "apaCitation": "Ruffell, S., Netzband, N., Bird, C., Young, A. H., & Juruena, M. F. (2020). The pharmacological interaction of compounds in ayahuasca: A systematic review (Corrigendum).",
+      "url": null,
+      "kind": "publication",
+      "aliases": [
+        "ruffell-2020-pharmacological-interaction-compounds-ayahuasca.pdf",
+        "Ruffell et al. 2020"
+      ]
+    },
+    {
+      "id": "halman_classic_psychedelics_ddi_2024",
+      "canonicalLabel": "halman-et-al-2023-drug-drug-interactions-involving-classic-psychedelics-a-systematic-review.pdf",
+      "apaCitation": "Halman, A., Kong, G., Sarris, J., & Perkins, D. (2024). Drug-drug interactions involving classic psychedelics: A systematic review. Journal of Psychopharmacology, 38(1), 3-18. https://doi.org/10.1177/02698811231211219",
+      "url": "https://doi.org/10.1177/02698811231211219",
+      "kind": "publication",
+      "aliases": [
+        "halman-et-al-2023-drug-drug-interactions-involving-classic-psychedelics-a-systematic-review.pdf",
+        "Halman et al. 2024"
+      ]
+    },
+    {
+      "id": "psilocybin_ssri_interaction_chart",
+      "canonicalLabel": "Psilocybin-Mushrooms-SSRIs-Antidepressant-Interaction-Chart.pdf",
+      "apaCitation": null,
+      "url": null,
+      "kind": "internal",
+      "aliases": [
+        "Psilocybin-Mushrooms-SSRIs-Antidepressant-Interaction-Chart.pdf"
+      ]
+    },
+    {
+      "id": "entheogen_interactions_research_update",
+      "canonicalLabel": "entheogen-interactions-research-update",
+      "apaCitation": null,
+      "url": null,
+      "kind": "internal",
+      "aliases": [
+        "entheogen-interactions-research-update"
+      ]
+    },
+    {
+      "id": "source_gap",
+      "canonicalLabel": "source-gap",
+      "apaCitation": null,
+      "url": null,
+      "kind": "internal",
+      "aliases": [
+        "source-gap"
+      ]
+    },
+    {
+      "id": "not_available",
+      "canonicalLabel": "n/a",
+      "apaCitation": null,
+      "url": null,
+      "kind": "internal",
+      "aliases": [
+        "n/a"
+      ]
+    }
+  ]
+}

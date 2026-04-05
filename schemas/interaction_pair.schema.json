@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/chaosste/EntheoGen/schemas/interaction_pair.schema.json",
+  "title": "EntheoGen interaction_pairs JSONL row",
+  "description": "Core fields for one line of exports/interaction_pairs.jsonl. Additional exporter columns are allowed.",
+  "type": "object",
+  "required": [
+    "pair_key",
+    "substance_a_id",
+    "substance_b_id",
+    "interaction_code",
+    "origin",
+    "mechanism_category",
+    "risk_scale"
+  ],
+  "properties": {
+    "pair_key": { "type": "string", "minLength": 1 },
+    "substance_a_id": { "type": "string", "minLength": 1 },
+    "substance_b_id": { "type": "string", "minLength": 1 },
+    "interaction_code": {
+      "type": "string",
+      "enum": ["LOW", "LOW_MOD", "CAU", "UNS", "DAN", "UNK", "SELF"]
+    },
+    "origin": {
+      "type": "string",
+      "enum": ["explicit", "fallback", "unknown", "self"]
+    },
+    "mechanism_category": {
+      "type": "string",
+      "enum": [
+        "serotonergic",
+        "maoi",
+        "qt_prolongation",
+        "sympathomimetic",
+        "cns_depressant",
+        "anticholinergic",
+        "dopaminergic",
+        "glutamatergic",
+        "gabaergic",
+        "stimulant_stack",
+        "psychedelic_potentiation",
+        "cardiovascular_load",
+        "unknown"
+      ]
+    },
+    "risk_scale": {
+      "type": ["integer", "null"],
+      "minimum": -1,
+      "maximum": 5
+    },
+    "interaction_label": { "type": ["string", "null"] },
+    "summary": { "type": ["string", "null"] },
+    "confidence": { "type": ["string", "null"] },
+    "mechanism": { "type": ["string", "null"] },
+    "timing": { "type": ["string", "null"] },
+    "evidence_gaps": { "type": ["string", "null"] },
+    "evidence_tier": {
+      "type": ["string", "null"],
+      "description": "Internal curation qualifier; not a formal citation or bibliographic tier."
+    },
+    "field_notes": {
+      "type": ["string", "null"],
+      "description": "Internal curator notes; not peer-reviewed references."
+    },
+    "sources": {
+      "type": ["string", "null"],
+      "description": "Internal traceability labels. Export pipeline resolves these labels to canonical source IDs in source_refs."
+    },
+    "source_refs": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Canonical deduplicated source IDs resolved from sources labels."
+    },
+    "source_fingerprint": {
+      "type": ["string", "null"],
+      "description": "SHA-256 fingerprint over sorted source_refs for deduplication and provenance integrity checks."
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,4 +1,4 @@
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,6 +10,8 @@ import {
   resolveInteraction,
   type RuleOrigin,
 } from '../data/drugData.ts';
+import { resolveSources, SOURCE_REGISTRY } from '../data/sourceRegistry.ts';
+import { DATASET_VERSION, SCHEMA_VERSION } from '../datasetVersion.ts';
 
 interface ExportRow {
   substance_a_id: string;
@@ -28,22 +30,30 @@ interface ExportRow {
   evidence_tier: string | null;
   field_notes: string | null;
   sources: string | null;
+  source_refs: string[] | null;
+  source_fingerprint: string | null;
 }
 
 interface Manifest {
   generated_at: string;
+  dataset_version: string;
   source_drug_count: number;
   pair_count: number;
-  schema_version: 1;
+  schema_version: number;
   code_distribution: Record<string, number>;
   origin_distribution: Record<RuleOrigin, number>;
   mechanism_category_distribution: Record<MechanismCategory, number>;
   diagnostics_generated: true;
   slice_directory: 'slices/';
   validation_script: 'scripts/validateDataset.ts';
+  source_reference_count: number;
+  source_registry_file: 'exports/source_registry.json';
 }
 
 interface DiagnosticsSummary {
+  generated_at: string;
+  dataset_version: string;
+  schema_version: number;
   total_rows: number;
   explicit_rows: number;
   fallback_rows: number;
@@ -86,6 +96,8 @@ const csvColumns: Array<keyof ExportRow> = [
   'evidence_tier',
   'field_notes',
   'sources',
+  'source_refs',
+  'source_fingerprint',
 ];
 
 const optionalText = (value: string | undefined): string | null => value ?? null;
@@ -97,6 +109,13 @@ const buildRow = (
   const { evidence, origin, pairKey } = resolveInteraction(drugAId, drugBId);
   const legend = LEGEND[evidence.code];
   const mechanismCategory = classifyMechanismCategory(evidence.mechanism);
+  const sourceResolution = resolveSources(evidence.sources);
+
+  if (sourceResolution.unresolvedLabels.length > 0) {
+    throw new Error(
+      `Unmapped source labels for pair ${pairKey}: ${sourceResolution.unresolvedLabels.join(', ')}`,
+    );
+  }
 
   return {
     substance_a_id: drugAId,
@@ -115,6 +134,8 @@ const buildRow = (
     evidence_tier: optionalText(evidence.evidenceTier),
     field_notes: optionalText(evidence.fieldNotes),
     sources: optionalText(evidence.sources),
+    source_refs: sourceResolution.sourceIds,
+    source_fingerprint: sourceResolution.sourceFingerprint,
   };
 };
 
@@ -139,12 +160,12 @@ const toJsonl = (rows: ExportRow[]): string => {
   return `${rows.map((row) => JSON.stringify(row)).join('\n')}\n`;
 };
 
-const escapeCsvValue = (value: string | number | boolean | null): string => {
+const escapeCsvValue = (value: string | number | boolean | string[] | null): string => {
   if (value === null) {
     return '';
   }
 
-  const stringValue = String(value);
+  const stringValue = Array.isArray(value) ? value.join('|') : String(value);
   if (/[",\n\r]/.test(stringValue)) {
     return `"${stringValue.replace(/"/g, '""')}"`;
   }
@@ -238,7 +259,11 @@ const buildDiagnosticsSummary = (
   fallbackOnlyRows: ExportRow[],
   unknownOnlyRows: ExportRow[],
   selfOnlyRows: ExportRow[],
+  generatedAt: string,
 ): DiagnosticsSummary => ({
+  generated_at: generatedAt,
+  dataset_version: DATASET_VERSION,
+  schema_version: SCHEMA_VERSION,
   total_rows: rows.length,
   explicit_rows: explicitOnlyRows.length,
   fallback_rows: fallbackOnlyRows.length,
@@ -248,6 +273,23 @@ const buildDiagnosticsSummary = (
   origin_distribution: buildOriginDistribution(rows),
   mechanism_category_distribution: buildMechanismCategoryDistribution(rows),
 });
+
+const patchHfDatasetReadme = (readmePath: string, generatedAt: string): void => {
+  const marker =
+    /\*\*Export bundle:\*\* dataset version `[^`]*` · generated `[^`]*` · schema version `\d+`/u;
+  let text = readFileSync(readmePath, 'utf8');
+  if (!marker.test(text)) {
+    console.warn(
+      `hf_dataset/README.md: missing "Export bundle" line; skipping version sync (path=${readmePath})`,
+    );
+    return;
+  }
+  text = text.replace(
+    marker,
+    `**Export bundle:** dataset version \`${DATASET_VERSION}\` · generated \`${generatedAt}\` · schema version \`${SCHEMA_VERSION}\``,
+  );
+  writeFileSync(readmePath, text, 'utf8');
+};
 
 const buildRegressionSnapshot = (
   summary: DiagnosticsSummary,
@@ -307,12 +349,14 @@ const main = (): void => {
     (row) => row.risk_scale !== null && row.risk_scale >= 2 && row.risk_scale <= 3,
   );
   const lowRiskRows = rows.filter((row) => row.risk_scale !== null && row.risk_scale <= 1);
+  const generatedAtIso = new Date().toISOString();
   const diagnosticsSummary = buildDiagnosticsSummary(
     rows,
     explicitOnlyRows,
     fallbackOnlyRows,
     unknownOnlyRows,
     selfOnlyRows,
+    generatedAtIso,
   );
   const regressionSnapshot = buildRegressionSnapshot(diagnosticsSummary);
 
@@ -323,6 +367,18 @@ const main = (): void => {
   writeExport('interaction_pairs_fallback_only.jsonl', toJsonl(fallbackOnlyRows));
   writeExport('interaction_pairs_unknown_only.jsonl', toJsonl(unknownOnlyRows));
   writeExport('interaction_pairs_self_only.jsonl', toJsonl(selfOnlyRows));
+  writeExport(
+    'source_registry.json',
+    `${JSON.stringify(
+      {
+        generated_at: generatedAtIso,
+        dataset_version: DATASET_VERSION,
+        entries: SOURCE_REGISTRY,
+      },
+      null,
+      2,
+    )}\n`,
+  );
 
   writeHfDatasetFile('train.jsonl', toJsonl(rows));
   writeHfDatasetFile('explicit.jsonl', toJsonl(explicitOnlyRows));
@@ -338,6 +394,9 @@ const main = (): void => {
           citation: '',
           homepage: '',
           license: 'mit',
+          dataset_version: DATASET_VERSION,
+          generated_at: generatedAtIso,
+          schema_version: SCHEMA_VERSION,
           features: {
             substance_a_id: 'string',
             substance_b_id: 'string',
@@ -347,6 +406,8 @@ const main = (): void => {
             mechanism_category: 'string',
             confidence: 'string',
             evidence_tier: 'string',
+            source_refs: 'list<string>',
+            source_fingerprint: 'string',
           },
         },
       },
@@ -354,38 +415,7 @@ const main = (): void => {
       2,
     )}\n`,
   );
-  writeHfDatasetFile(
-    'README.md',
-    `# EntheoGen Interaction Dataset
-
-This dataset contains pairwise interaction classifications between psychoactive substances.
-
-Features:
-
-- deterministic rule engine
-- provenance-aware labels
-- abstention-safe UNKNOWN class
-- mechanism_category normalized labels
-- explicit vs fallback separation
-
-Splits:
-
-train
-explicit
-fallback
-unknown
-self
-
-Label fields:
-
-interaction_code
-risk_scale
-origin
-mechanism_category
-
-Generated automatically from EntheoGen rule engine.
-`,
-  );
+  patchHfDatasetReadme(join(hfDatasetDir, 'README.md'), generatedAtIso);
 
   writeDiagnosticsFile('summary.json', `${JSON.stringify(diagnosticsSummary, null, 2)}\n`);
   writeDiagnosticsFile('distributions.csv', toDistributionCsv(diagnosticsSummary));
@@ -407,16 +437,19 @@ Generated automatically from EntheoGen rule engine.
   writeSliceFile('origin_self.jsonl', toJsonl(selfOnlyRows));
 
   const manifest: Manifest = {
-    generated_at: new Date().toISOString(),
+    generated_at: generatedAtIso,
+    dataset_version: DATASET_VERSION,
     source_drug_count: DRUGS.length,
     pair_count: rows.length,
-    schema_version: 1,
+    schema_version: SCHEMA_VERSION,
     code_distribution: diagnosticsSummary.interaction_code_distribution,
     origin_distribution: diagnosticsSummary.origin_distribution,
     mechanism_category_distribution: diagnosticsSummary.mechanism_category_distribution,
     diagnostics_generated: true,
     slice_directory: 'slices/',
     validation_script: 'scripts/validateDataset.ts',
+    source_reference_count: SOURCE_REGISTRY.length,
+    source_registry_file: 'exports/source_registry.json',
   };
 
   writeExport('manifest.json', `${JSON.stringify(manifest, null, 2)}\n`);

@@ -3,6 +3,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { LEGEND } from '../data/drugData.ts';
+import { resolveSources } from '../data/sourceRegistry.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -39,6 +40,21 @@ const rawContent = readFileSync(datasetPath, 'utf8');
 const lines = rawContent.split('\n').filter((line) => line.trim().length > 0);
 const seenPairKeys = new Set<string>();
 const errors: string[] = [];
+
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((entry) => typeof entry === 'string' && entry.length > 0);
+
+const sameStringArray = (left: string[] | null, right: string[] | null): boolean => {
+  if (left === null && right === null) {
+    return true;
+  }
+
+  if (!left || !right || left.length !== right.length) {
+    return false;
+  }
+
+  return left.every((value, index) => value === right[index]);
+};
 
 for (let index = 0; index < lines.length; index += 1) {
   let row: Record<string, unknown>;
@@ -94,6 +110,59 @@ for (let index = 0; index < lines.length; index += 1) {
 
   if (typeof row.risk_scale !== 'number' || Number.isNaN(row.risk_scale)) {
     errors.push(`Line ${index + 1}: risk_scale is not numeric`);
+  }
+
+  const sources = typeof row.sources === 'string' ? row.sources : null;
+  const expectedSourceResolution = resolveSources(sources);
+
+  if (expectedSourceResolution.unresolvedLabels.length > 0) {
+    errors.push(
+      `Line ${index + 1}: unresolved source labels (${expectedSourceResolution.unresolvedLabels.join(', ')})`,
+    );
+  }
+
+  const sourceRefs = row.source_refs;
+  if (sourceRefs === null || sourceRefs === undefined) {
+    if (expectedSourceResolution.sourceIds !== null) {
+      errors.push(`Line ${index + 1}: missing source_refs for populated sources`);
+    }
+  } else if (!isStringArray(sourceRefs)) {
+    errors.push(`Line ${index + 1}: source_refs must be an array of non-empty strings`);
+  } else {
+    const uniqueRefs = [...new Set(sourceRefs)].sort((left, right) => left.localeCompare(right));
+    if (uniqueRefs.length !== sourceRefs.length) {
+      errors.push(`Line ${index + 1}: source_refs contains duplicates`);
+    }
+    if (!sameStringArray(uniqueRefs, expectedSourceResolution.sourceIds)) {
+      errors.push(`Line ${index + 1}: source_refs do not match canonical registry mapping`);
+    }
+  }
+
+  const sourceFingerprint = row.source_fingerprint;
+  if (sourceFingerprint === null || sourceFingerprint === undefined) {
+    if (expectedSourceResolution.sourceFingerprint !== null) {
+      errors.push(`Line ${index + 1}: missing source_fingerprint for populated sources`);
+    }
+  } else if (typeof sourceFingerprint !== 'string' || sourceFingerprint.length === 0) {
+    errors.push(`Line ${index + 1}: source_fingerprint must be a non-empty string when present`);
+  } else if (sourceFingerprint !== expectedSourceResolution.sourceFingerprint) {
+    errors.push(`Line ${index + 1}: source_fingerprint does not match canonical source_refs hash`);
+  }
+
+  if (expectedSourceResolution.sourceIds?.includes('source_gap')) {
+    if (row.origin !== 'unknown' || row.interaction_code !== 'UNK') {
+      errors.push(
+        `Line ${index + 1}: source-gap placeholder is only valid for unknown/UNK rows`,
+      );
+    }
+  }
+
+  if (expectedSourceResolution.sourceIds?.includes('not_available')) {
+    if (row.origin !== 'self' || row.interaction_code !== 'SELF') {
+      errors.push(
+        `Line ${index + 1}: n/a placeholder is only valid for self/SELF rows`,
+      );
+    }
   }
 }
 
